@@ -9,6 +9,6 @@ const isAuth_js_1 = require("../middlewares/isAuth.js");
 const auth_js_2 = require("../controller/auth.js");
 const router = express_1.default.Router();
 router.post("/login", auth_js_1.loginUser);
-router.post("/add/role", isAuth_js_1.isAuth, auth_js_1.addUserRole);
+router.put("/add/role", isAuth_js_1.isAuth, auth_js_1.addUserRole);
 router.get("/me", isAuth_js_1.isAuth, auth_js_2.myProfile);
 exports.default = router;

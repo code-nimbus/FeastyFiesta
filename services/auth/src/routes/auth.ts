@@ -6,7 +6,7 @@ import { myProfile } from "../controller/auth.js";
 const router = express.Router();
 
 router.post("/login", loginUser);
-router.post("/add/role", isAuth, addUserRole)
+router.put("/add/role", isAuth, addUserRole)
 router.get("/me", isAuth, myProfile);
 
 export default router;
