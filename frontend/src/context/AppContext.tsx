@@ -40,7 +40,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                 },
             });
 
-            setUser(data.user);
+            setUser(data.user || data);
             setIsAuth(true);
         } catch (error) {
             console.log(error);

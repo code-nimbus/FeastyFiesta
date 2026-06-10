@@ -29,7 +29,7 @@ const NavBar = () => {
     return (
         <div className="w-full bg-white shadow-sm">
             <div className="mx-auto flex max-w-7xl items-center justify-between px-5 py-3">
-                <Link to={'/'} className="text-2xl font-bold text-[#W23744] cursor-pointer">
+                <Link to={'/'} className="text-2xl font-bold text-green-700 cursor-pointer">
                     fIESTYfIESTA
                 </Link>
                 <div className="flex items-center">
