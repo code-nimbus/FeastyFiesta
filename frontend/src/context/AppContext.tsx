@@ -87,6 +87,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                         data.address?.village ||
                         "Your location"
                     );
+                    setLoadingLocation(false)
                 } catch (error) {
                     console.log(error);
 
@@ -97,6 +98,7 @@ export const AppProvider = ({ children }: AppProviderProps) => {
                     });
 
                     setCity("Failed to load");
+                    setLoadingLocation(false)
                 } finally {
                     setLoadingLocation(false);
                 }

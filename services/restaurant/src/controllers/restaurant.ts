@@ -84,7 +84,7 @@ export const fetchMyRestaurant = TryCatch(async (req: AuthenticatedRequest, res)
 
     if (!restaurant) {
         return res.status(400).json({
-            message: "Invalid user",
+            message: "No restaurant found",
         });
     }
 
@@ -92,12 +92,12 @@ export const fetchMyRestaurant = TryCatch(async (req: AuthenticatedRequest, res)
         const token = jwt.sign({
             user: {
                 ...req.user,
-                restaurant: restaurant._id
+                restaurantId: restaurant._id
             },
 
         },
             process.env.JWT_SEC as string, {
-            expiresIn: "15",
+            expiresIn: "15d",
         }
         );
 
@@ -106,7 +106,4 @@ export const fetchMyRestaurant = TryCatch(async (req: AuthenticatedRequest, res)
 
     res.json({ restaurant })
 }
-
-
-
-)
+);

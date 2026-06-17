@@ -65,17 +65,17 @@ export const fetchMyRestaurant = TryCatch(async (req, res) => {
     const restaurant = await Restaurant.findOne({ ownerId: req.user._id });
     if (!restaurant) {
         return res.status(400).json({
-            message: "Invalid user",
+            message: "No restaurant found",
         });
     }
     if (!req.user.restaurantId) {
         const token = jwt.sign({
             user: {
                 ...req.user,
-                restaurant: restaurant._id
+                restaurantId: restaurant._id
             },
         }, process.env.JWT_SEC, {
-            expiresIn: "15",
+            expiresIn: "15d",
         });
         return res.json({ restaurant, token });
     }

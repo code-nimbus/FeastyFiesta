@@ -3,9 +3,11 @@ import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import restaurantRoutes from "./routes/restaurant.js";
 // import authRoute from "./routes/auth.js";
-// import cors from "cors"
+import cors from "cors";
 dotenv.config();
 const app = express();
+app.use(cors());
+app.use(express.json());
 const PORT = process.env.PORT || 5002;
 app.use("/api/restaurant", restaurantRoutes);
 app.listen(PORT, () => {
