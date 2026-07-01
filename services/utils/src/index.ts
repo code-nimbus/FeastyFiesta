@@ -1,6 +1,6 @@
 import express from "express";
 import dotenv from "dotenv";
-import cloudinary from "cloudinary";
+import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import uploadRoutes from "./routes/cloudinary.js";
 
@@ -10,7 +10,7 @@ const app = express();
 
 app.use(cors())
 app.use(express.json({ limit: "50mb" }));
-app.use(express.urlencoded({ limit: "5000", extended: true }))
+app.use(express.urlencoded({ limit: "50mb", extended: true }))
 
 const { CLOUD_NAME, CLOUD_API_KEY, CLOUD_SECRET_KEY } = process.env;
 
@@ -18,12 +18,18 @@ if (!CLOUD_NAME || !CLOUD_API_KEY || !CLOUD_SECRET_KEY) {
     throw new Error("Missing Cloudinary Environment Variables");
 }
 
-cloudinary.v2.config({
+cloudinary.config({
     cloud_name: CLOUD_NAME,
     api_key: CLOUD_API_KEY,
     api_secret: CLOUD_SECRET_KEY,
 });
 
+console.log("CLOUD NAME:", CLOUD_NAME);
+console.log("API KEY:", CLOUD_API_KEY);
+console.log("SECRET EXISTS:", !!CLOUD_SECRET_KEY);
+console.log(cloudinary.config());
+
+console.log("UPLOAD ROUTES LOADED");
 app.use("/api", uploadRoutes);
 
 const PORT = process.env.PORT || 5003;

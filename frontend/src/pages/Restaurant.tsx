@@ -22,7 +22,8 @@ const Restaurant = () => {
             setRestaurant(data.restaurant || null)
 
             if (data.token) {
-                localStorage.setItem("token", data.token)
+                localStorage.setItem("token", data.token);
+                window.location.reload();
             }
         } catch (error) {
             console.log(error);
@@ -41,11 +42,11 @@ const Restaurant = () => {
     );
 
     if (!restaurant) {
-        return <AddRestaurant />
+        return <AddRestaurant fetchMyRestaurant={fetchMyRestaurant} />
     }
 
     return (
-        <div>Restaurant</div>
+        <div className="min-h-screen bg-gray-50 px-4 py-6 space-y-6">Restaurant</div>
     )
 }
 

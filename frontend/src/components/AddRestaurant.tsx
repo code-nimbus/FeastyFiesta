@@ -5,8 +5,12 @@ import axios from "axios"
 import { restaurantService } from "../main"
 import { BiMapPin, BiUpload } from "react-icons/bi"
 
+interface props {
+    fetchMyRestaurant: () => Promise<void>;
+}
 
-const AddRestaurant = () => {
+
+const AddRestaurant = ({ fetchMyRestaurant }: props) => {
 
     const [name, setName] = useState("")
     const [description, setDescription] = useState("")
@@ -40,10 +44,15 @@ const AddRestaurant = () => {
                 },
             });
 
-            toast.success("Restaurant added succesfully")
+            toast.success("Restaurant added succesfully");
+            fetchMyRestaurant();
 
-        } catch (error) {
-            toast.error(error.response.data.message)
+        } catch (error: any) {
+            console.log("ERROR:", error);
+
+            toast.error(
+                error?.response?.data?.message || "Something went wrong"
+            );
 
         } finally {
             setSubmitting(false)
@@ -73,8 +82,8 @@ const AddRestaurant = () => {
 
                     placeholder="Restaurant Description"
                     value={description}
-                    onChange={e => setPhone(e.target.value)}
-                    className="w-full rounded-lg borfer px-4 py-2 text-sm outline-null"
+                    onChange={e => setDescription(e.target.value)}
+                    className="w-full rounded-lg border px-4 py-2 text-sm outline-null"
                 />
 
                 <label className="flex cursor-pointter items-center gap-3 rounded-lg border p-4 text-sm text-gray-600 hover:bg-gray-500">
