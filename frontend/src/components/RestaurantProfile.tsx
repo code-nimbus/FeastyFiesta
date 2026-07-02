@@ -3,6 +3,7 @@ import type { IRestaurant } from "../types"
 import axios from "axios";
 import toast from "react-hot-toast";
 import { BiEdit, BiMapPin, BiSave } from "react-icons/bi";
+import { restaurantService } from "../main";
 
 interface props {
     restaurant: IRestaurant;
@@ -19,7 +20,7 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
 
     const toggleOpenStatus = async () => {
         try {
-            const { data } = await axios.put(`${restaurant}/api/restaurant/status`,
+            const { data } = await axios.put(`${restaurantService}/api/restaurant/status`,
                 { status: !isOpen },
                 {
                     headers: {
@@ -27,7 +28,7 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
                     },
                 }
             );
-            toast.success(data.message)
+            toast.success("data.message")
             setIsOpen(data.restaurant.isOpen)
         } catch (error) {
             console.log(error)
@@ -38,7 +39,7 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
     const saveChanges = async () => {
         try {
             setLoading(true)
-            const { data } = await axios.put(`${restaurant}/api/restaurant/edit`,
+            const { data } = await axios.put(`${restaurantService}/api/restaurant/edit`,
                 { name, description },
                 {
                     headers: {
@@ -48,7 +49,7 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
             );
             onUpdate(data.restaurant)
             toast.success(data.message)
-
+            setEditMode(false);
         } catch (error) {
             console.log(error)
             toast.error("failed to update")
@@ -122,8 +123,8 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
                             )}
                         {
                             isSeller && (<button onClick={toggleOpenStatus} className={`rounded-lg px-4 py-1.5 text-sm font-medium text-white ${isOpen
-                                    ? "bg-red-600 hover:bg-red-700"
-                                    : "bg-green-600 hover:bg-green-700"
+                                ? "bg-red-600 hover:bg-red-700"
+                                : "bg-green-600 hover:bg-green-700"
                                 }`}
                             >
                                 {isOpen ? "Close restaurant" : "Open restaurant"}
@@ -131,6 +132,8 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
                         }
                     </div>
                 </div>
+
+                <p className="text-xs text-gray-400 ">Created on {new Date(restaurant.createdAt).toLocaleDateString()}</p>
 
             </div>
         </div>
