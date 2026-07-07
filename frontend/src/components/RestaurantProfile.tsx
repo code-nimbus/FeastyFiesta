@@ -28,7 +28,7 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
                     },
                 }
             );
-            toast.success("data.message")
+            toast.success(data.message)
             setIsOpen(data.restaurant.isOpen)
         } catch (error) {
             console.log(error)
