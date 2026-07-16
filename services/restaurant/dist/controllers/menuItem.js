@@ -43,7 +43,7 @@ export const addMenuItem = TryCatch(async (req, res) => {
         description,
         price,
         restaurantId: restaurant._id,
-        image: uploadResult.url
+        image: uploadResult.url,
     });
     res.json({
         message: "Item added successfully",
@@ -79,9 +79,49 @@ export const deleteMenuItem = TryCatch(async (req, res) => {
         });
     }
     const restaurant = await Restaurant.findOne({
-        id: item.restaurantId,
+        _id: item.restaurantId,
         ownerId: req.user._id,
     });
     if (!restaurant) {
+        return res.status(404).json({
+            message: "No retsaurant found",
+        });
     }
+    await item.deleteOne();
+    res.json({
+        message: "Menu item deleted successfully",
+    });
+});
+export const toggleMenuItemAvailability = TryCatch(async (req, res) => {
+    if (!req.user) {
+        return res.status(404).json({
+            message: "Please login"
+        });
+    }
+    const { itemId } = req.params;
+    if (!itemId) {
+        return res.status(400).json({
+            message: "id is required",
+        });
+    }
+    const item = await MenuItems.findById(itemId);
+    if (!item) {
+        return res.status(404).json({
+            message: "no item found"
+        });
+    }
+    const restaurant = await Restaurant.findOne({
+        _id: item.restaurantId,
+        ownerId: req.user._id,
+    });
+    if (!restaurant) {
+        return res.status(404).json({
+            message: "No retsaurant found",
+        });
+    }
+    item.isAvailable = !item.isAvailable;
+    await item.save();
+    res.json({
+        message: `Item marked as ${item.isAvailable ? "available" : "unavailable"}`
+    });
 });
