@@ -63,38 +63,36 @@ const RestaurantProfile = ({ restaurant, isSeller, onUpdate }: props) => {
             {
                 restaurant.image && (
                     <img
-                        src="{restaurant.image}"
+                        src={restaurant.image}
                         alt=""
                         className="h-48 w-full object-cover"
                     />
                 )}
             <div className="h-48 w-full space-y-4">
-                {
-                    isSeller && (<div className="flex items-start justify-between">
-                        <div>
-                            {editMode ? (
-                                <input
-                                    value={name}
-                                    onChange={e => setName(e.target.value)}
-                                    className="w-full rounded border px-2 py-1 text-lg font-semibold"
-                                />
-                            ) : (
-                                <h2 className="text-xl font-semibold">{restaurant.name}</h2>
-                            )}
-                            <div className="mt-1 felx items-center gap-2 text-sm text-gray-500">
-                                <BiMapPin className="h-4 w-4 text-red-500">
-                                    {
-                                        restaurant.autoLocation.formattedAddress || "Location unavailable"
-                                    }
-                                </BiMapPin>
-                            </div>
-                        </div>
+                <div className="flex items-start justify-between">
+                    <div>
+                        {editMode ? (
+                            <input
+                                value={name}
+                                onChange={e => setName(e.target.value)}
+                                className="w-full rounded border px-2 py-1 text-lg font-semibold"
+                            />
+                        ) : (
+                            <h2 className="text-xl font-semibold">{restaurant.name}</h2>
+                        )}
+                        <div className="mt-1 flex items-center gap-2 text-sm text-gray-500">
+                            <BiMapPin className="h-4 w-4 text-red-500" />
+                            <span>
+                                {restaurant.autoLocation.formattedAddress || "Location unavailable"}
+                            </span>
 
-                        <button onClick={() => setEditMode(!editMode)} className="text-gray-500 hover:text-black ">
-                            <BiEdit size={18} />
-                        </button>
+                        </div>
                     </div>
-                    )}
+
+                    {isSeller && (<button onClick={() => setEditMode(!editMode)} className="text-gray-500 hover:text-black ">
+                        <BiEdit size={18} />
+                    </button>)}
+                </div>
 
                 {editMode ? (
                     <textarea

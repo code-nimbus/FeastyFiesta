@@ -1,12 +1,13 @@
 import { useState } from "react";
 import type { IMenuItem } from "../types"
 import { FiEyeOff } from "react-icons/fi";
-import { BsCart, BsEye } from "react-icons/bs";
+import { BsCartPlus, BsEye } from "react-icons/bs";
 import { BiTrash } from "react-icons/bi";
 import { VscLoading } from "react-icons/vsc";
 import { restaurantService } from "../main";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { useAppData } from "../context/AppContext";
 
 interface MenuItemsProps {
     items: IMenuItem[];
@@ -53,6 +54,30 @@ const MenuItems = ({ items, onItemDeleted, isSeller }: MenuItemsProps) => {
         } catch (error) {
             toast.error("Failed to update status")
         }
+    };
+
+    const { fetchCart } = useAppData();
+
+    const addToCart = async (restaurantId: string, itemId: string) => {
+        try {
+            setLoadingItemId(itemId)
+            const { data } = await axios.post(`${restaurantService}/api/cart/add`,
+                {
+                    restaurantId,
+                    itemId,
+                },
+                {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem("token")}`
+                    }
+                });
+            toast.success(data.message);
+            await fetchCart();
+        } catch (error: any) {
+            toast.error(error.response.data.message);
+        } finally {
+            setLoadingItemId(null);
+        }
     }
 
     return (
@@ -72,7 +97,7 @@ const MenuItems = ({ items, onItemDeleted, isSeller }: MenuItemsProps) => {
                                     }`}
                             />
                             {
-                                item.isAvailable && <span className="absolute inset-0 flex items-center justify-center rounded bg-black/60 text-xs font-semibold text-white">
+                                !item.isAvailable && <span className="absolute inset-0 flex items-center justify-center rounded bg-black/60 text-xs font-semibold text-white">
                                     Not available
                                 </span>
                             }
@@ -105,12 +130,18 @@ const MenuItems = ({ items, onItemDeleted, isSeller }: MenuItemsProps) => {
                                         </button>
                                     </div>
                                 }
-                                {
-                                    !isSeller && <button
+                                {!isSeller && (
+                                    <button
+                                        disabled={!item.isAvailable || isLoading}
+                                        onClick={() => addToCart(item.restaurantId, item._id)}
                                         className={`flex items-center justify-center rounded-lg p-2 ${!item.isAvailable || isLoading
                                             ? "cursor-not-allowed text-gray-400"
                                             : "text-red-500 hover:bg-red-500"
-                                            }`}>{isLoading ? <VscLoading size={18} className="animate-spin" /> : <BsCart size={18} />}</button>
+                                            }`}
+                                    >
+                                        {isLoading ? <VscLoading size={18} className="animate-spin" /> : <BsCartPlus size={18} />}
+                                    </button>
+                                )
                                 }
                             </div>
                         </div>
