@@ -12,6 +12,7 @@ import Restaurant from "./pages/Restaurant";
 import RestaurantCard from "./components/RestaurantCard";
 import RestaurantPage from "./pages/RestaurantPage";
 import Cart from "./pages/Cart";
+import Address from "./pages/Address";
 
 const App = () => {
 
@@ -38,6 +39,7 @@ const App = () => {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
+              <Route path="/address" element={<Address />} />
               <Route path="/restaurant/:id" element={<RestaurantPage />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/select-role" element={<SelectRole />} />

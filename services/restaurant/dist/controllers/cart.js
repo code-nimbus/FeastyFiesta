@@ -93,7 +93,7 @@ export const decrementCartItem = TryCatch(async (req, res) => {
     if (cartItem?.quantity === 0) {
         await Cart.deleteOne({ userId, itemId });
         return res.json({
-            message: "Item removed fro cart"
+            message: "Item removed from cart"
         });
     }
     await cartItem?.save();
