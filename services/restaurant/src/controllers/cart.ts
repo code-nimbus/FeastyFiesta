@@ -56,14 +56,48 @@ export const fetchMyCart = TryCatch(async (req: AuthenticatedRequest, res) => {
 
     const userId = req.user._id;
 
+    // const cartItems = await Cart.find({ userId })
+    //     .populate("itemId")
+    //     .populate("restaurantId");
+
     const cartItems = await Cart.find({ userId })
         .populate("itemId")
         .populate("restaurantId");
 
+    console.log("========== CART ==========");
+    console.dir(cartItems, { depth: 5 });
+
     let subtotal = 0;
     let cartLength = 0;
 
-    for (const cartItem of cartItems) {
+    // for (const cartItem of cartItems) {
+    //     const item: any = cartItem.itemId;
+
+    //     subtotal += item.price * cartItem.quantity;
+    //     cartLength += cartItem.quantity;
+    // }
+
+    // for (const cartItem of cartItems) {
+    //     console.log("itemId populated:", cartItem.itemId);
+    //     console.log("restaurant populated:", cartItem.restaurantId);
+
+    //     const item: any = cartItem.itemId;
+
+    //     if (!item) {
+    //         console.log("❌ itemId populate failed");
+    //         continue;
+    //     }
+
+    //     subtotal += item.price * cartItem.quantity;
+    //     cartLength += cartItem.quantity;
+    // }
+
+    const validCartItems = cartItems.filter(cart => cart.itemId);
+
+    // let subtotal = 0;
+    // let cartLength = 0;
+
+    for (const cartItem of validCartItems) {
         const item: any = cartItem.itemId;
 
         subtotal += item.price * cartItem.quantity;
@@ -72,11 +106,19 @@ export const fetchMyCart = TryCatch(async (req: AuthenticatedRequest, res) => {
 
     return res.json({
         success: true,
-        cartLength,
         subtotal,
-        cart: cartItems,
-    })
+        cartLength,
+        cart: validCartItems,
+    });
 })
+
+//     return res.json({
+//         success: true,
+//         cartLength,
+//         subtotal,
+//         cart: cartItems,
+//     })
+// })
 
 export const incrementCartItem = TryCatch(async (req: AuthenticatedRequest, res) => {
     const userId = req.user?._id;

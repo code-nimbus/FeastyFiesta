@@ -3,7 +3,10 @@ import dotenv from "dotenv";
 import { v2 as cloudinary } from "cloudinary";
 import cors from "cors";
 import uploadRoutes from "./routes/cloudinary.js";
+import paymentRoutes from "./routes/payment.js";
+import { connectRabbitMQ } from "./config/rabbitmq.js";
 dotenv.config();
+connectRabbitMQ();
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: "50mb" }));
@@ -23,6 +26,7 @@ console.log("SECRET EXISTS:", !!CLOUD_SECRET_KEY);
 console.log(cloudinary.config());
 console.log("UPLOAD ROUTES LOADED");
 app.use("/api", uploadRoutes);
+app.use("/api/payment", paymentRoutes);
 const PORT = process.env.PORT || 5003;
 app.listen(PORT, () => {
     console.log(`utils service is running on port ${PORT}`);

@@ -1,7 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home";
 import Login from "./pages/Login";
-import { Toaster } from "react-hot-toast"
 import PublicRoute from "./components/publicRoute";
 import ProtectedRoute from "./components/protectedRoute";
 import SelectRole from "./pages/SelectRole";
@@ -9,10 +8,11 @@ import NavBar from "./components/navbar";
 import Account from "./pages/Account";
 import { useAppData } from "./context/AppContext";
 import Restaurant from "./pages/Restaurant";
-import RestaurantCard from "./components/RestaurantCard";
 import RestaurantPage from "./pages/RestaurantPage";
 import Cart from "./pages/Cart";
-import Address from "./pages/Address";
+
+import AddAddressPage from "./pages/Address";
+import Checkout from "./pages/Checkout";
 
 const App = () => {
 
@@ -39,7 +39,8 @@ const App = () => {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
-              <Route path="/address" element={<Address />} />
+              <Route path="/address" element={<AddAddressPage />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/restaurant/:id" element={<RestaurantPage />} />
               <Route path="/cart" element={<Cart />} />
               <Route path="/select-role" element={<SelectRole />} />
@@ -47,7 +48,7 @@ const App = () => {
             </Route>
 
           </Routes>
-          {/* <Toaster /> */}
+
         </>
       )}
 

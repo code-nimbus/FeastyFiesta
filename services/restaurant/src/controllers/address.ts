@@ -10,12 +10,17 @@ export const addAddress = TryCatch(async (req: AuthenticatedRequest, res) => {
         })
     }
 
-    const [mobile, formattedAddress, latitutde, longitude] = req.body;
+    const { mobile, formattedAddress, latitude, longitude } = req.body;
 
-    if (!mobile || !formattedAddress || latitutde == undefined || longitude == undefined) {
+    if (
+        !mobile ||
+        !formattedAddress ||
+        latitude === undefined ||
+        longitude === undefined
+    ) {
         return res.status(400).json({
-            message: "Please give all fields"
-        })
+            message: "Please give all fields",
+        });
     }
 
     const newAddress = await Address.create({
@@ -24,7 +29,7 @@ export const addAddress = TryCatch(async (req: AuthenticatedRequest, res) => {
         formattedAddress,
         location: {
             type: "Point",
-            coordinates: [Number(latitutde), Number(longitude)]
+            coordinates: [Number(longitude), Number(latitude)]
         }
     });
 
@@ -42,10 +47,10 @@ export const deleteAddress = TryCatch(async (req: AuthenticatedRequest, res) => 
         })
     }
 
-    const { id } = req.body;
+    const { id } = req.params;
 
     if (!id) {
-        res.status(400).json({
+        return res.status(400).json({
             message: "id is required"
         })
     }
