@@ -10,7 +10,8 @@ export const createOrder = TryCatch(async (req, res) => {
             message: "Please login",
         });
     }
-    const { paymentMethod, addressId, riderDistance } = req.body;
+    const { paymentMethod, addressId } = req.body;
+    const distance = 0;
     if (!addressId) {
         return res.status(400).json({
             message: "Address is required",
@@ -69,7 +70,7 @@ export const createOrder = TryCatch(async (req, res) => {
     const totalAmount = subtotal + deliveryFee + platformFee;
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
     const [longitude, latitude] = address.location.coordinates;
-    const riderAmount = Math.ceil(riderDistance) * 17;
+    const riderAmount = Math.ceil(distance) * 17;
     const order = await Order.create({
         userId: user._id.toString(),
         restaurantId: restaurantId.toString(),

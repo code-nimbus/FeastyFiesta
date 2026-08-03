@@ -16,7 +16,9 @@ export const createOrder = TryCatch(async (req: AuthenticatedRequest, res) => {
         })
     }
 
-    const { paymentMethod, addressId, riderDistance } = req.body;
+    const { paymentMethod, addressId } = req.body;
+
+    const distance = 0
 
     if (!addressId) {
         return res.status(400).json({
@@ -95,7 +97,7 @@ export const createOrder = TryCatch(async (req: AuthenticatedRequest, res) => {
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);
 
     const [longitude, latitude] = address.location.coordinates;
-    const riderAmount = Math.ceil(riderDistance) * 17;
+    const riderAmount = Math.ceil(distance) * 17;
 
     const order = await Order.create({
         userId: user._id.toString(),
