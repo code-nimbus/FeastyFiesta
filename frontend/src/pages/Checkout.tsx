@@ -14,7 +14,7 @@ interface Address {
 }
 
 const Checkout = () => {
-    const { cart, subtotal, quantity } = useAppData();
+    const { cart, subtotal, quantity, fetchCart } = useAppData();
 
     const [addresses, setAddresses] = useState<Address[]>([]);
 
@@ -125,7 +125,9 @@ const Checkout = () => {
                         })
 
                         toast.success("Payment successful 🎉")
-                        navigate(`paymentsuccess/` + response.razorpay_payment_id)
+
+                        // fetchCart();
+                        navigate("/paymentsuccess/" + response.razorpay_payment_id)
                     } catch (error) {
                         toast.error("Payment verification failed")
                     }
@@ -257,12 +259,12 @@ const Checkout = () => {
                     ) : (
                         <BiCreditCard size={18} />
                     )} Pay with RazorPay </button>
-                <button disabled={!selectedAddressId || loadingRazorpay || creatingOrder}
-                    onClick={payWithRazorpay}
+                <button disabled={!selectedAddressId || loadingStripe || creatingOrder}
+                    onClick={payWithStripe}
                     className="flex w-full items-center justify-center gap-2 rounded-lg bg-black 
                 py-3 txt-sm font-semibold text-white hover:bg-gray-800 disabled:opacity-50"
                 >
-                    {loadingRazorpay ? (
+                    {loadingStripe ? (
                         <BiLoader size={18} className="animate-spin" />
 
                     ) : (

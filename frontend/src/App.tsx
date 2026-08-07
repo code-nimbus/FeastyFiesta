@@ -13,6 +13,7 @@ import Cart from "./pages/Cart";
 
 import AddAddressPage from "./pages/Address";
 import Checkout from "./pages/Checkout";
+import PaymentSuccess from "./pages/PaymentSuccess";
 
 const App = () => {
 
@@ -39,6 +40,7 @@ const App = () => {
 
             <Route element={<ProtectedRoute />}>
               <Route path="/" element={<Home />} />
+              <Route path="/paymentsuccess/:paymentId" element={<PaymentSuccess />} />
               <Route path="/address" element={<AddAddressPage />} />
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/restaurant/:id" element={<RestaurantPage />} />
